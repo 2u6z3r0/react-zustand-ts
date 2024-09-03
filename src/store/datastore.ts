@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import catSlice, { CatSlice } from "./catSlice"
 import dogSlice, { DogSlice } from "./dogSlice"
+import { persist } from "zustand/middleware"
 
 
 interface CatsState {
@@ -15,9 +16,9 @@ export const useCatsStore = create<CatsState>()((set) => ({
     resetCount: () => set(() => ({cats: 0}))
 }))
 
-export const useBoundStore = create<CatSlice & DogSlice>()((...a) => ({
+export const useBoundStore = create<CatSlice & DogSlice>()(persist((...a) => ({
     ...catSlice(...a),
     ...dogSlice(...a)
-}))
+}), { name: 'boundstorage', }))
 
 export default useCatsStore;
